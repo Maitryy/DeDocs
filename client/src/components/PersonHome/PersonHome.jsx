@@ -17,7 +17,7 @@ const PersonHome = () => {
   useEffect(async() => {
     const { accounts, contract } = state;
     if(contract){
-      const orgAd = "0xf08E19593b4e314008A77d0257240ae2Fc0eED18"
+ 
       const res5 = await contract.methods.getPerson(`${accounts[0]}`).call();
       console.log(res5);
       setPersonInfo(res5);
@@ -74,7 +74,7 @@ const PersonHome = () => {
           <div className={styles.profilePicContainer}>
             <p className={styles.mainHead}>Profile Picture</p>
             <div className={styles.QRBlock}>
-              <img className={styles.profilePic} src={`https://ipfs.infura.io/ipfs/${(personInfo.pic_hash !== undefined) ? personInfo.pic_hash : "asdf"}`} />
+              <img className={styles.profilePic} src={personInfo.pic_hash} />
             </div>
           </div>
           
@@ -85,8 +85,8 @@ const PersonHome = () => {
             <div className={styles.eduDetails}>
               {(personInfo.Edu_data && personInfo.Edu_data.length !== 0) ? 
                 personInfo.Edu_data.map((edu, index) => {
-                  return <div key={index} onClick={() => {handleDocClick(edu);}} className={`${styles.recordCard} ${styles.eduOrg}`}>
-                    <img className={styles.previewImg} src={`https://ipfs.infura.io/ipfs/${edu.Hash}`}/>
+                  return <div k ey={index} onClick={() => {handleDocClick(edu);}} className={`${styles.recordCard} ${styles.eduOrg}`}>
+                  <span>Click for details</span>
                     <span className={styles.recordTitleText}>{edu.doc_title}</span>
                     <span>by {edu.org_name}</span>
                   </div>
@@ -101,7 +101,7 @@ const PersonHome = () => {
               {(personInfo.Med_data && personInfo.Med_data.length !== 0) ? 
                   personInfo.Med_data.map((edu, index) => {
                     return <div key={index} onClick={() => {handleDocClick(edu);}} className={`${styles.recordCard} ${styles.eduOrg}`}>
-                      <img className={styles.previewImg} src={`https://ipfs.infura.io/ipfs/${edu.Hash}`}/>
+                      <img className={styles.previewImg} src={edu.Hash}/>
                       <span className={styles.recordTitleText}>{edu.doc_title}</span>
                       <span>by {edu.org_name}</span>
                     </div>
@@ -116,7 +116,7 @@ const PersonHome = () => {
               {(personInfo.Crime_data && personInfo.Crime_data.length !== 0) ? 
                   personInfo.Crime_data.map((edu, index) => {
                     return <div key={index} onClick={() => {handleDocClick(edu);}} className={`${styles.recordCard} ${styles.eduOrg}`}>
-                      <img className={styles.previewImg} src={`https://ipfs.infura.io/ipfs/${edu.Hash}`}/>
+                      <img className={styles.previewImg} src={edu.Hash}/>
                       <span className={styles.recordTitleText}>{edu.doc_title}</span>
                       <span>by {edu.org_name}</span>
                     </div>

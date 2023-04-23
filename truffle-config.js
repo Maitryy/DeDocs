@@ -8,8 +8,15 @@ module.exports = {
     develop: {
       port: 8545,
       gas: 6721974
-    }
+    },
+    development: {
+      host: "127.0.0.1",
+      port: 7545,
+        network_id: "*", // Match any network id
+        gas: 6721974
+    },
   },
+  
   compilers: {
     solc: {
         version: "0.5.15", // Fetch exact version from solc-bin (default: truffle's version)

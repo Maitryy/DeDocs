@@ -38,27 +38,45 @@ const RegisterEduOrg = () => {
     } 
     setLoading(true);
     try{
-        const { accounts, contract } = state;
-        console.log(accounts);
+      const { accounts, contract } = state;
+      if (!imageFile) {
 
-        const reader = new window.FileReader();
-          reader.readAsArrayBuffer(imageFile);
-          reader.onloadend= () => {
-              const imagebuf = Buffer(reader.result)
-              console.log(imagebuf)
-              ipfs.files.add(imagebuf, async (err, result) => {
-                  if(err){
-                      console.log(err);
-                      return;
-                  }
-                  console.log(result);
-                  await contract.methods.registerOrg(`${accounts[0]}`, orgName, 0, `${result[0].hash}`, contactNum, orgLocation, orgAbout, orgPhyAddress, orgEmail, orgEmail).send({ from: accounts[0] });
-                  const res5 = await contract.methods.getOrg(`${accounts[0]}`).call();
-                  console.log(res5);
-                  navigate("/");
-              })
-          }
-
+        return alert("No files selected");
+      }
+      const nfiles = [new File([imageFile], "documents.pdf")];
+     
+      const cid = await ipfs.put(nfiles);
+      // let url = "https://ipfs.io/ipfs/" + cid + "/documents.pdf";
+      let url = "https://" + cid +".ipfs.w3s.link/documents.pdf"
+  
+              // ipfs.files.add(imagebuf, async (err, result) => {
+              //     if(err){
+              //         console.log(err);
+              //         return;
+              //     }
+              //     console.log(result);
+                  // await contract.methods.registerOrg(`${accounts[0]}`, orgName, 0, `rand`, contactNum, orgLocation, orgAbout, orgPhyAddress, orgEmail, orgEmail).send({ from: accounts[0] });
+                  // const res5 = await contract.methods.getOrg(`${accounts[0]}`).call();
+                  // console.log(res5);
+                  // navigate("/");
+              // })
+              await contract.methods
+              .registerOrg(
+                `${accounts[0]}`,
+                orgName,
+                0,
+                `${url}`,
+                contactNum,
+                orgLocation,
+                orgAbout,
+                orgPhyAddress,
+                orgEmail,
+                orgEmail
+              )
+              .send({ from: accounts[0] });
+            const res5 = await contract.methods.getOrg(`${accounts[0]}`).call();
+            console.log(res5);
+            navigate("/");
         
     }catch(err){
         console.log(err);
@@ -141,7 +159,7 @@ const RegisterEduOrg = () => {
                   <UploadIcon sx={{marginRight: 1}}/>
                   {fileName}
               </button>
-              <input onChange={handleFileChange} ref={uploadImageInput} accept="image/*" className={`${styles.customInput} ${styles.fileUploadInput}`} type="file" placeholder={""} />
+              <input onChange={handleFileChange} ref={uploadImageInput}  className={`${styles.customInput} ${styles.fileUploadInput}`} type="file" placeholder={""} />
           </div>
           <div
             className={`${styles.inputGroup} ${styles.rowInputGroup} ${styles.spanInputGroup}`}

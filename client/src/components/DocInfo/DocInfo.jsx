@@ -36,7 +36,8 @@ const DocInfo = () => {
             <div className={styles.docInfoContent}>
                 <span className={styles.heading}>Record</span>
                 <div className={styles.docImageContainer}>
-                    <img className={styles.docImage} src={`https://ipfs.infura.io/ipfs/${recordInfo.Hash ? recordInfo.Hash : "asdf"}`}/>
+                    {/* <img className={styles.docImage} src={recordInfo.Hash}/> */}
+                    <a href={recordInfo.Hash}><span>View Document</span></a>
                 </div>
                 <div className={styles.subHeading}>Information</div>
                 <div className={styles.infoTitle}>Title: Some Title Name</div>

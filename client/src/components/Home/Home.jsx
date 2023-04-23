@@ -8,7 +8,8 @@ import PersonHome from "../PersonHome/PersonHome";
 import OrgHome from "../OrgHome/OrgHome";
 import OwnerHomePage from "../OwnerHomePage/OwnerHomePage";
 import bc from "../../images/bc2.png";
-
+import Admin from "../Admin";
+import Verify from "../Verify";
 const Home = () => {
   const navigate = useNavigate();
   const { state, name } = useContext(ContractContext);
@@ -16,7 +17,7 @@ const Home = () => {
 
   const checkRole = async () => {
     const { accounts, contract } = state;
-    console.log(accounts);
+    console.log("acc"+ accounts);
     console.log(contract);
     try {
       const res = await contract.methods.checkRole(`${accounts[0]}`).call();
@@ -94,12 +95,16 @@ const Home = () => {
         // </div>
       );
     } else if (userRole == 1) {
-      return <OwnerHomePage />;
+      // return <OwnerHomePage />;
+      return <Admin />
     } else if (userRole == 2) {
       return <PersonHome />;
     } else if (userRole >= 3 && userRole <= 5) {
       return <OrgHome />;
-    } else {
+    } else if (userRole == 6) {
+      return <Verify />;
+    } 
+    else {
       return <div>Page not found</div>;
     }
   };

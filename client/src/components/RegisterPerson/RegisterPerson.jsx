@@ -3,9 +3,8 @@ import styles from "./RegisterPerson.module.css";
 import { ContractContext } from "../../contexts/ContractContext";
 import { useNavigate } from "react-router-dom";
 import UploadIcon from "@mui/icons-material/Upload";
-// import ipfs from "../../ipfs";
-import individual from "../../images/individuals.png";
-import { Web3Storage } from 'web3.storage/dist/bundle.esm.min.js'
+import ipfs from "../../ipfs";
+
 
 const RegisterPerson = () => {
   const { state, name } = useContext(ContractContext);
@@ -21,8 +20,7 @@ const RegisterPerson = () => {
   const [physicalAddress, setPhysicalAddress] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [loading, setLoading] = useState(false);
-    const tokenAPI = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGM1NzFFZDIzZmEzZmVDYkMxZjRkZmQxYTYwYjU0M2VDYTY4YzE1Y2YiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzAwNTU1MDc4MjAsIm5hbWUiOiJldGhJbmRpYTIyIn0.ASS-92fnmoYCz_TuFqu3uci01Om6oTQzsMcl6-_9Pus";
-  const client = new Web3Storage({ token: tokenAPI });
+  
 
     const handleUploadImage = () => {
         uploadImageInput.current.click();
@@ -30,7 +28,7 @@ const RegisterPerson = () => {
 
     const handleFileChange = (e) => {
         setFileName(e.target.files[0].name);
-        setImageFile(e.target.files);
+        setImageFile(e.target.files[0]);
     }
 
     const handleGenderChange = (e) =>{
@@ -49,43 +47,22 @@ const RegisterPerson = () => {
 
             // new
             console.log(imageFile)
-            const rootCid = await client.put(imageFile)
-            const info = await client.status(rootCid)
+            if (!imageFile) {
 
-            await contract.methods.registerPerson(`${accounts[0]}`, rootCid, fullName, gender, aadharNum, physicalAddress, dob, contactNum).send({ from: accounts[0] });
+                return alert("No files selected");
+              }
+              const nfiles = [new File([imageFile], "profilepic.jpeg")];
+             
+              const cid = await ipfs.put(nfiles);
+              // let url = "https://ipfs.io/ipfs/" + cid + "/documents.pdf";
+              let url = "https://" + cid +".ipfs.w3s.link/profilepic.jpeg"
+         
+
+            await contract.methods.registerPerson(`${accounts[0]}`, url, fullName, gender, aadharNum, physicalAddress, dob, contactNum).send({ from: accounts[0] });
             const res5 = await contract.methods.getPerson(`${accounts[0]}`).call();
             console.log(res5);
             navigate("/")
 
-            // old
-
-
-            // const reader = new window.FileReader();
-            // reader.readAsArrayBuffer(imageFile);
-            // reader.onloadend= async () => {
-
-            //     //
-                
-
-
-            //     const imagebuf = Buffer(reader.result)
-            //     console.log(imagebuf)
-            //     const fileAdded = await ipfs.add(imagebuf);
-            //     console.log(fileAdded.path);
-            //     console.log(fileAdded.cid);
-                
-            //     // ipfs.add(imagebuf, async (err, result) => {
-            //     //     if(err){
-            //     //         console.log(err);
-            //     //         return;
-            //     //     }
-            //     //     console.log(result);
-            //     //     await contract.methods.registerPerson(`${accounts[0]}`, result[0].hash, fullName, gender, aadharNum, physicalAddress, dob, contactNum).send({ from: accounts[0] });
-            //     //     const res5 = await contract.methods.getPerson(`${accounts[0]}`).call();
-            //     //     console.log(res5);
-            //     //     navigate("/");
-            //     // })
-            // }
 
             
         }catch(err){

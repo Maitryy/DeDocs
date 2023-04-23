@@ -58,31 +58,27 @@ const OrgAddRecord = () => {
         }
     }
 
-    const handleSubmitRecord = () => {
+    const handleSubmitRecord = async () => {
         if(!isChecked || userAddress === "" || aadharNumber === "" || contactNumber === "" || recordTitle === "" || description === "" || imageFile == null){
             alert("Fill everything first"); return;
         }
         try{
             const { accounts, contract } = state;
-            const reader = new window.FileReader();
-            reader.readAsArrayBuffer(imageFile);
-            reader.onloadend= () => {
-                const imagebuf = Buffer(reader.result)
-                console.log(imagebuf)
-                ipfs.files.add(imagebuf, async (err, result) => {
-                    if(err){
-                        console.log(err);
-                        return;
-                    }
-                    console.log(result);
-                    await contract.methods.addPersonDoc(userAddress, Number(orgInfo.type_org), `${accounts[0]}`, `${result[0].hash}`, recordTitle, description).send({ from: accounts[0] });
-                    navigate("/");
-                })
-            }
-            // await contract.methods.registerOrg(`${accounts[0]}`, orgName, 0, contactNum, orgLocation, orgAbout, orgEmail).send({ from: accounts[0] });
-            // const res5 = await contract.methods.getOrg(`${accounts[0]}`).call();
-            // console.log(res5);
-            // navigate("/");
+            if (!imageFile) {
+
+                return alert("No files selected");
+              }
+              const nfiles = [new File([imageFile], "documents.pdf")];
+             
+              const cid = await ipfs.put(nfiles);
+              // let url = "https://ipfs.io/ipfs/" + cid + "/documents.pdf";
+              let url = "https://" + cid +".ipfs.w3s.link/documents.pdf"
+        
+                await contract.methods.addPersonDoc(userAddress, Number(orgInfo.type_org), `${accounts[0]}`, `${url}`, recordTitle, description).send({ from: accounts[0] });
+                navigate("/");
+
+                
+               
         }catch(err){
             console.log(err);
         }

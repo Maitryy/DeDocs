@@ -30,18 +30,19 @@ const App = () => {
   
         // Use web3 to get the user's accounts.
         const accounts = await web3.eth.getAccounts();
-        console.log(accounts)
+        console.log("accounts"+  accounts)
   
         // Get the contract instance.
         const networkId = await web3.eth.net.getId();
         const deployedNetwork = Aadhar.networks[networkId];
         console.log(deployedNetwork)
-        const instance = new web3.eth.Contract(
+        const contract = new web3.eth.Contract(
           Aadhar.abi,
           deployedNetwork && deployedNetwork.address,
         );
-  
-        setState({ web3, accounts, contract: instance });
+        console.log("web3:"+ web3)
+        setState({ web3, accounts,  contract });
+        console.log(state)
         // alert(`Connected with ${accounts[0]}`)
       } catch (error) {
         // Catch any errors for any of the above operations.
