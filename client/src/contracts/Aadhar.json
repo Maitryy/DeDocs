@@ -48173,12 +48173,12 @@
     "1337": {
       "events": {},
       "links": {},
-      "address": "0xcA08fAbd366055a6C58883A1e6F93fD2F118883f",
-      "transactionHash": "0x0f48abab6452522ae95705103defa21c8fdfa43de39ba34cda5d86c5974562b4"
+      "address": "0xF16366bDFBF9fB62B8Fb786795f2FB8ba2D342c7",
+      "transactionHash": "0xd44e15f531d9f3823be5e9d73a8283ab6aad536e78b0833774751ec0a90fb9b6"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2023-04-20T22:12:42.592Z",
+  "updatedAt": "2023-04-29T11:41:55.204Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

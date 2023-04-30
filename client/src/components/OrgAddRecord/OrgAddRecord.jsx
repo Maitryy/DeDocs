@@ -127,7 +127,7 @@ const OrgAddRecord = () => {
                             <UploadIcon sx={{marginRight: 1}}/>
                             {fileName}
                         </button>
-                        <input onChange={handleFileChange} ref={uploadImageInput} accept="image/*" className={`${styles.customInput} ${styles.fileUploadInput}`} type="file" placeholder={""} />
+                        <input onChange={handleFileChange} ref={uploadImageInput}  className={`${styles.customInput} ${styles.fileUploadInput}`} type="file" placeholder={""} />
                     </div>
                     <div className={`${styles.inputGroup} ${styles.rowInputGroup} ${styles.spanInputGroup}`}>
                         <input onChange={(e) => { setIsChecked(e.target.checked); }}  className={`${styles.customCheckInput}`} type="checkbox" placeholder={""} />
